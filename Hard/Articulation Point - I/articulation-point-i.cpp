@@ -6,54 +6,39 @@ using namespace std;
 
 // } Driver Code Ends
 //User function Template for C++
-
+#include<bits/stdc++.h>
 class Solution {
-  public:int pntr=0;
-    void dfs(int node,int parent,int vis[],vector<int> adj[],vector<int> &tim,vector<int> &low,vector<int> &mark)
+  public:
+    int timer=1;
+    void dfs(int node,int par,vector<int> &vis,vector<int> &tim,vector<int> &low,set<int> &m,vector<int> adj[])
     {
         vis[node]=1;
-        tim[node]=low[node]=pntr++;
         int child=0;
-        for(int neigh:adj[node])
-        { if(neigh==parent){continue;}
-            if(vis[neigh]==0){
-                dfs(neigh,node,vis,adj,tim,low,mark);
-                low[node]=min(low[node],low[neigh]);
-                if(low[neigh]>=tim[node] && parent!=-1)
-                {
-                    mark[node]=1;
-                }
-                child++;
-            }
-            else{
-                low[node]=min(low[node],tim[neigh]);
-            }
+        tim[node]=low[node]=timer++;
+        for(auto j:adj[node])
+        {
+            if(j==par){continue;}
+            if(!vis[j]){dfs(j,node,vis,tim,low,m,adj); child++;
+                        low[node]=min(low[node],low[j]);
+                        if(low[j]>=tim[node] && par!=-1){m.insert(node);}}
+            else{low[node]=min(low[node],tim[j]);}            
         }
-        if(parent==-1 && child>1){mark[node]=1;}
-        
+        if(par==-1 && child>1){m.insert(node);}
     }
     vector<int> articulationPoints(int V, vector<int>adj[]) {
         // Code here
-        int vis[V];
-        for(int k=0;k<V;k++){vis[k]=0;}
-        //we will need mark vector,tim vector,low vector and vis
-        vector<int> mark(V,0);
-        vector<int> tim(V);
-        vector<int> low(V);
+        set<int> m;
+        vector<int> vis(V,0);
+        vector<int> tim(V,0);
+        vector<int> low(V,0);
+        vector<int> ans;
+        
         for(int i=0;i<V;i++)
         {
-            if(vis[i]==0)
-            {
-                dfs(i,-1,vis,adj,tim,low,mark);
-            }
+            dfs(i,-1,vis,tim,low,m,adj);
         }
-        
-        vector<int> ans;
-        for(int n=0;n<V;n++)
-        {
-            if(mark[n]==1){ans.push_back(n);}
-        }
-        if(ans.size()==0){return {-1};}
+       for(auto n:m){ans.push_back(n);}
+       if(ans.size()==0){return {-1};}
         return ans;
         
     }
