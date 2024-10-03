@@ -32,7 +32,7 @@ class Solution
                  }
                  else
                  {
-                    l=k;
+                    l=k=r;
                     while(r<x.size() && x[r-l]==x[r]){r++;}
                     Z[k]=(r-l);
                     r--;
