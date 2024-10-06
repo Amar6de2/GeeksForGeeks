@@ -26,13 +26,13 @@ class Solution
                 else//k is between l and r
                 {
                  int k1=k-l;        
-                 if(k+Z[k1]<=r)
+                 if(k+Z[k1]<=r)// IF YOU ARE STANDING AT k and you have Z[k1] as the length of substring starting from k index ...so 
                  {
                      Z[k]=Z[k1];
                  }
                  else
                  {
-                    l=k=r;
+                    l=k;
                     while(r<x.size() && x[r-l]==x[r]){r++;}
                     Z[k]=(r-l);
                     r--;
