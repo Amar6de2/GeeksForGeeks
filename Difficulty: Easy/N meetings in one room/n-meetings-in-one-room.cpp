@@ -2,52 +2,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
-class Solution
-{
-    public:
-    //Function to find the maximum number of meetings that can
-    //be performed in a meeting room.
-    class compare{
-        public:
-        bool operator()(pair<int,int> a,pair<int,int> b)
-        {
-            return a.second<b.second;
-        }
+class Solution {
+  public:
+    // Function to find the maximum number of meetings that can
+    // be performed in a meeting room.
+    class compare{public:
+         bool operator()(vector<int> &a,vector<int> &b)
+         {
+             return a[1]<b[1];
+         }
     };
-    int maxMeetings(int start[], int end[], int n)
-    {
+    int maxMeetings(vector<int>& start, vector<int>& end) {
         // Your code here
-        vector<pair<int,int>> vec(n);
-        for(int i=0;i<n;i++)
+        vector<vector<int>> meet;
+        for(int i=0;i<start.size();i++)
         {
-            vec[i]={start[i],end[i]};
+            meet.push_back({start[i],end[i]});
         }
-        sort(vec.begin(),vec.end(),compare());
-        int ans=1;int en=vec[0].second;
-        for(int i=1;i<n;i++)
+        sort(meet.begin(),meet.end(),compare());
+        int ans=0;
+        int last=-1;
+        for(auto it: meet)
         {
-            if(vec[i].first>en){ans++;en=vec[i].second;}
+            int s=it[0];
+            int e=it[1];
+            if(s>last)
+            {
+                ans++;
+                last=e;
+            }
         }
         return ans;
     }
 };
 
 //{ Driver Code Starts.
+
 int main() {
+
     int t;
     cin >> t;
+    cin.ignore();
     while (t--) {
-        int n;
-        cin >> n;
-        int start[n], end[n];
-        for (int i = 0; i < n; i++) cin >> start[i];
+        string input;
+        int num;
+        vector<int> start;
 
-        for (int i = 0; i < n; i++) cin >> end[i];
+        getline(cin, input);
+        stringstream s2(input);
+        while (s2 >> num) {
+            start.push_back(num);
+        }
+
+        vector<int> end;
+        getline(cin, input);
+        stringstream s22(input);
+        while (s22 >> num) {
+            end.push_back(num);
+        }
 
         Solution ob;
-        int ans = ob.maxMeetings(start, end, n);
+        int ans = ob.maxMeetings(start, end);
         cout << ans << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
