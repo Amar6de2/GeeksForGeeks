@@ -1,56 +1,30 @@
-//{ Driver Code Starts
-#include<bits/stdc++.h>
-using namespace std;
-
-// } Driver Code Ends
-
-
-class Solution 
-{
-    public:
-    //Function to find the minimum number of swaps required to sort the array. 
-	int minSwaps(vector<int>&nums)
-	{
-	    // Code here
-	    int n=nums.size();
-	    vector<pair<int,int>> vec(nums.size());
-	    for(int i=0;i<n;i++)
-	    {
-	        vec[i]={nums[i],i};
-	    }
-	    sort(vec.begin(),vec.end());
-	    int j=0;
-	    int swaps=0;
-	    while(j<n)
-	    {
-	        if(vec[j].second!=j)
-	        {
-	            swap(vec[j],vec[vec[j].second]);
-	            swaps++;
-	        }
-	        else
-	        {
-	            j++;
-	        }
-	    }
-	    return swaps;
-	}
+class Solution {
+  public:
+    // Function to find the minimum number of swaps required to sort the array.
+    int minSwaps(vector<int>& arr) {
+        // Code here
+        int n=arr.size();
+        vector<pair<int,int>> num(n);
+        for(int i=0;i<n;i++)
+        {
+            num[i]={arr[i],i};
+        }
+        sort(num.begin(),num.end());
+        int ans=0;
+        vector<int> vis(n,0);
+        for(int i=0;i<n;i++)
+        {
+            int pos=i;// this is the origpos where this arr[i] was initially
+            int swap=0;//assuming the arr[i] is at the correct position ...so swap =1 means arr[i] ko arr[i] se swap kar rahe hai i th position pe !
+            while(!vis[pos])
+            {   
+                vis[pos]=1;
+                swap++;
+                pos=num[pos].second;
+            }
+            ans+=max(swap-1,0);
+        }
+        return ans;
+        
+    }
 };
-
-//{ Driver Code Starts.
-int main(){
-	int tc;
-	cin >> tc;
-	while(tc--){
-		int n;
-		cin >> n;
-		vector<int>nums(n);
-		for(int i = 0; i < n; i++)
-			cin >> nums[i];
-		Solution obj;
-		int ans = obj.minSwaps(nums);
-		cout << ans <<"\n";
-	}
-	return 0;
-}
-// } Driver Code Ends
